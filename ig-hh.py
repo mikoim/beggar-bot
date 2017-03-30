@@ -100,11 +100,14 @@ def main():
     session.add_all(current_sale)
     session.commit()
 
-    # example) Discord webhooks
-    DISCORD_WEBHOOK_URL = 'https://discordapp.com/api/webhooks/foo/bar'
-    requests.post(DISCORD_WEBHOOK_URL, json={
-        'content': 'Happy hour started!\n' + '\n'.join([str(x) for x in new_happy_hour])
-    })
+    if len(new_happy_hour) > 0:
+        # example) Discord webhooks
+        DISCORD_WEBHOOK_URL = 'https://discordapp.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN'
+        requests.post(DISCORD_WEBHOOK_URL, json={
+            'username': '',
+            'avatar_url': '',
+            'content': 'New happy hour!\n' + '\n'.join([str(x) for x in new_happy_hour])
+        })
 
 
 if __name__ == '__main__':
