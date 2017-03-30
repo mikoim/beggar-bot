@@ -45,18 +45,18 @@ def http_get(url: str) -> str:
 
 
 def extract_title(elem) -> str:
-    a = elem.find('div', class_='mega-menu-item-title').find('a')
+    a = elem.find('span', class_='libd-submen-title').find('a')
     return a.string
 
 
 def extract_url(elem) -> str:
-    a = elem.find('div', class_='mega-menu-item-title').find('a')
+    a = elem.find('span', class_='libd-submen-title').find('a')
     return urljoin(BASE_URL, a['href'])
 
 
 def is_happy_hour(elem) -> bool:
     try:
-        img = elem.find('div', class_='extra-info-cont').find('img')
+        img = elem.find('span', class_='libd-info-cont').find('img')
         return img['alt'].lower() == 'happy hour'
     except AttributeError:
         return False
@@ -66,7 +66,7 @@ def parse_index(html: str) -> list:
     root = BeautifulSoup(html, 'lxml')
     return [
         History(name=extract_title(li), url=extract_url(li), is_happy_hour=is_happy_hour(li))
-        for li in root.find_all('li', class_='mega-menu-item relative')
+        for li in root.find_all('li', class_='libd-submenu')[0].find_all('li', class_='libd-submenu')
     ]
 
 
